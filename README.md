@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Live Training Registration Mananger
+The purpose of this app is to manage Bridge live trianing registrations
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
+When registrations are made a text is sent to the learner indicating that they have been added to a session
+When registrations are deleted a text is sent to the learner indication that they have been removed
 
 * ...
