@@ -1,15 +1,16 @@
 class TwilioTexterController < ApplicationController
-    attr_reader :message
+    attr_reader :message, :phone_number
 
-    def initialize(message)
+    def initialize(message, phone_number)
       @message = message
+      @phone_number = phone_number
     end
   
     def call
       client = Twilio::REST::Client.new
       client.messages.create(
           from: Rails.application.credentials.TWILIO_PHONE_NUMBER, 
-          to: '+18018650496', 
+          to: phone_number, 
           body: message)
     end
 end

@@ -23,7 +23,9 @@ class WebhooksController < ApplicationController
 
         message = "You have successfully registered for live course: #{lc_title}, which starts: #{lc_date}"
 
-        TwilioTexterController.new(message).call
+        number = user.phone_number
+
+        TwilioTexterController.new(message, number).call
 
 
         head :ok
@@ -45,7 +47,8 @@ class WebhooksController < ApplicationController
         user.update(number_of_registrations: user.number_of_registrations - 1)
 
         message = "You have successfully been removed from live course: #{lc_title}, session: #{live_course_session_id}"
+        number = user.phone_number
 
-        TwilioTexterController.new(message).call
+        TwilioTexterController.new(message, number).call
     end
 end
