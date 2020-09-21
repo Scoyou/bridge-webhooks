@@ -1,4 +1,4 @@
-class MessageUserWorker < ApplicationController
+class MessageUserWorker
     include Sidekiq::Worker
     sidekiq_options retry: false
 
