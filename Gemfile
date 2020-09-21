@@ -42,3 +42,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'pry-rails', '~> 0.3.9'
 gem 'twilio-ruby'
+gem 'sidekiq'
+gem 'whenever', require: false
+gem 'httparty'
+gem 'net-sftp', '~> 3.0'
