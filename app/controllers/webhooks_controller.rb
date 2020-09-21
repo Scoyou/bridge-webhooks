@@ -1,4 +1,5 @@
 class WebhooksController < ApplicationController
+
     
     def create_registration
         data = JSON.parse(request.body.read)
@@ -54,6 +55,6 @@ class WebhooksController < ApplicationController
 
         # TwilioTexterController.new(message, number).call
 
-        DestoryRegistrationWorker.perform_async(data)
+        DestroyRegistrationWorker.perform_async(data)
     end
 end
