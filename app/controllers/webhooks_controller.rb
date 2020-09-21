@@ -22,7 +22,6 @@ class WebhooksController < ApplicationController
         : user.update(number_of_registrations: user.number_of_registrations + 1)
 
         message = "You have successfully registered for live course: #{lc_title}, which starts: #{lc_date}"
-
         number = user.phone_number
 
         TwilioTexterController.new(message, number).call
