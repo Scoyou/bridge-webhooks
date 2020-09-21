@@ -1,4 +1,4 @@
-class CreateRegistrationWorker
+class CreateRegistrationWorker < ApplicationController
     include Sidekiq::Worker
     sidekiq_options retry: false
 

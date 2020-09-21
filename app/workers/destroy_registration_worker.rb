@@ -1,4 +1,4 @@
-class DestroyRegistrationWorker
+class DestroyRegistrationWorker < ApplicationController
     include Sidekiq::Worker
     sidekiq_options retry: false
 

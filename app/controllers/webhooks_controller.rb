@@ -1,6 +1,4 @@
 class WebhooksController < ApplicationController
-    require_relative '../workers/create_registration_worker'
-    require_relative '../workers/destroy_registration_worker'
     
     def create_registration
         data = JSON.parse(request.body.read)

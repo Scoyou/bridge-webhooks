@@ -1,4 +1,4 @@
-class UserWorker
+class UserWorker < ApplicationController
     include Sidekiq::Worker
     sidekiq_options retry: false
 
