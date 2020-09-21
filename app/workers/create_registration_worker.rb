@@ -25,6 +25,6 @@ class CreateRegistrationWorker
         message = "You have successfully registered for live course: #{lc_title}, which starts: #{lc_date}"
         number = user.phone_number
 
-        MessageUserWorker.perform_asyc(message, number)
+        MessageUserWorker.perform_async(message, number)
     end
 end

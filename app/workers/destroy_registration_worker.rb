@@ -18,6 +18,6 @@ class DestroyRegistrationWorker
         message = "You have successfully been removed from live course: #{lc_title}, session: #{live_course_session_id}"
         number = user.phone_number
 
-        MessageUserWorker.perform_asyc(message, number)
+        MessageUserWorker.perform_async(message, number)
     end
 end
