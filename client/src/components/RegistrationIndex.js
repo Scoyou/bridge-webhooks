@@ -22,6 +22,9 @@ class RegistrationIndex extends Component {
   }
 
   markAttended = (domain, session_id, registration_id) => {
+    const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`
+    const proxyurl = "https://cors-anywhere.herokuapp.com/"
+
     const token = process.env.REACT_APP_BRIDGE_API_KEY;
 
     let config = {
@@ -37,13 +40,16 @@ class RegistrationIndex extends Component {
     };
 
     axios.patch(
-      `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`,
+      proxyurl + url,
       body,
       config
     );
   };
 
   markUnAttended = (domain, session_id, registration_id) => {
+    const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`
+    const proxyurl = "https://cors-anywhere.herokuapp.com/"
+
     const token = process.env.REACT_APP_BRIDGE_API_KEY;
 
     let config = {
@@ -59,7 +65,7 @@ class RegistrationIndex extends Component {
     };
 
     axios.patch(
-      `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`,
+      proxyurl + url,
       body,
       config
     );
