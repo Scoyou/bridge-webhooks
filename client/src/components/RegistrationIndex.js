@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Container } from 'semantic-ui-react';
+import { ExternalLink } from 'react-external-link';
+
 
 import axios from 'axios';
 
@@ -17,15 +20,19 @@ class RegistrationIndex extends Component {
 
     displayRegistrations = () => {
         const { registrations } = this.state
-        return registrations.map(registration => (
-            <div key={registration.id}>
-                <ul>
-                    <li>UID: {registration.uid}</li>
-                    <li>Live_course_id: {registration.live_course_id}</li>
-                    <li>Session_id: {registration.live_course_session_id}</li>
-                    <li>Registration_id: {registration.bridge_registration_id}</li>
-                </ul>
-            </div>
+        const domain = 'syautocsv2'
+        return registrations.map(reg => (
+            <ExternalLink 
+            href={`https://${domain}.bridgeapp.com/author/training/${reg.live_course_id}/sessions/${reg.live_course_session_id}?search=${reg.uid}`}>
+                <Container key={reg.id}>
+                    <ul>
+                        <li>UID: {reg.uid}</li>
+                        <li>Live_course_id: {reg.live_course_id}</li>
+                        <li>Session_id: {reg.live_course_session_id}</li>
+                        <li>Registration_id: {reg.bridge_registration_id}</li>
+                    </ul>
+                </Container>
+            </ExternalLink>
         ))
     }
 

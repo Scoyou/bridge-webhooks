@@ -4,7 +4,9 @@ import RegistrationIndex from './components/RegistrationIndex';
 
 function App() {
   return (
-    <RegistrationIndex />
+    <div>
+      <RegistrationIndex />
+    </div>
   );
 }
 
