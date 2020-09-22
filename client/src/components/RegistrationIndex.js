@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import { 
-    Table, 
-    Container,
-    Checkbox 
-} from "semantic-ui-react";
+import { Table, Container, Checkbox } from "semantic-ui-react";
 import { ExternalLink } from "react-external-link";
-import moment from 'moment';
+import moment from "moment";
 
 import axios from "axios";
 
 class RegistrationIndex extends Component {
-  state = { registrations: [] };
+  state = {
+    registrations: [],
+  };
 
   componentDidMount() {
     axios
@@ -24,18 +22,48 @@ class RegistrationIndex extends Component {
   }
 
   markAttended = (domain, session_id, registration_id) => {
-    const token = process.env.REACT_APP_BRIDGE_API_KEY
+    const token = process.env.REACT_APP_BRIDGE_API_KEY;
 
     let config = {
-        headers: {
-          Authorization: token,
-        }
-      }
+      headers: {
+        Authorization: token,
+      },
+    };
 
-      let body = {"live_course_session_registration":{"marked_complete_at": moment().format() }}
-      
-      axios.patch(`https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`, body, config)
-  }
+    let body = {
+      live_course_session_registration: {
+        marked_complete_at: moment().format(),
+      },
+    };
+
+    axios.patch(
+      `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`,
+      body,
+      config
+    );
+  };
+
+  markUnAttended = (domain, session_id, registration_id) => {
+    const token = process.env.REACT_APP_BRIDGE_API_KEY;
+
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    let body = {
+      live_course_session_registration: {
+        marked_complete_at: null,
+      },
+    };
+
+    axios.patch(
+      `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`,
+      body,
+      config
+    );
+  };
 
   displayRegistrations = () => {
     const { registrations } = this.state;
@@ -46,6 +74,7 @@ class RegistrationIndex extends Component {
         <Table>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell>Attended</Table.HeaderCell>
               <Table.HeaderCell>Unique ID</Table.HeaderCell>
               <Table.HeaderCell>Live Course ID</Table.HeaderCell>
               <Table.HeaderCell>Session ID</Table.HeaderCell>
@@ -56,7 +85,23 @@ class RegistrationIndex extends Component {
             {registrations.map((reg) => (
               <Table.Row>
                 <Table.Cell collapsing>
-                  <Checkbox slider onClick={() => this.markAttended(domain, reg.live_course_session_id, reg.bridge_registration_id)}/>
+                  <Checkbox
+                    slider
+                    onClick={
+                      reg.isAttended
+                        ? this.markUnAttended(
+                            domain,
+                            reg.live_course_session_id,
+                            reg.bridge_registration_id
+                          )
+                        : () =>
+                            this.markAttended(
+                              domain,
+                              reg.live_course_session_id,
+                              reg.bridge_registration_id
+                            )
+                    }
+                  />
                 </Table.Cell>
 
                 <Table.Cell>
