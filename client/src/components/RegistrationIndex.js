@@ -89,11 +89,12 @@ class RegistrationIndex extends Component {
                     slider
                     onClick={
                       reg.isAttended
-                        ? this.markUnAttended(
-                            domain,
-                            reg.live_course_session_id,
-                            reg.bridge_registration_id
-                          )
+                        ? () =>
+                            this.markUnAttended(
+                              domain,
+                              reg.live_course_session_id,
+                              reg.bridge_registration_id
+                            )
                         : () =>
                             this.markAttended(
                               domain,
