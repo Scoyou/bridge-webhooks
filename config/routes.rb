@@ -3,4 +3,11 @@ Rails.application.routes.draw do
   post '/hooks/bridge/create_registration' => 'webhooks#create_registration'
   post '/hooks/bridge/delete_registration' => 'webhooks#delete_registration'
 
+  post '/api/users/user_sync' => 'api/users#add_to_db'
+
+  namespace :api do
+    resources :registrations
+
+  end
+
 end

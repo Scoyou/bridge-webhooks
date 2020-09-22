@@ -6,7 +6,7 @@ class Api::UsersController < ApplicationController
         @users = Users.all
     end
 
-    def self.add_to_db
+    def add_to_db
         # moved to user_worker.rb
         # sftp = Net::SFTP.start(
         #     '35.224.193.198',
