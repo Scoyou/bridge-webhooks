@@ -5,6 +5,7 @@ import {
     Checkbox 
 } from "semantic-ui-react";
 import { ExternalLink } from "react-external-link";
+import moment from 'moment';
 
 import axios from "axios";
 
@@ -30,7 +31,10 @@ class RegistrationIndex extends Component {
           Authorization: token,
         }
       }
-      axios.patch(`https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`,{}, config)
+
+      let body = {"live_course_session_registration":{"marked_complete_at": moment().format() }}
+      
+      axios.patch(`https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`, body, config)
   }
 
   displayRegistrations = () => {

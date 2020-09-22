@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Skezey/bridge-webhooks/issues"
   },
-  "homepage": "https://github.com/Skezey/bridge-webhooks#readme"
+  "homepage": "https://github.com/Skezey/bridge-webhooks#readme",
+  "dependencies": {
+    "moment": "^2.29.0"
+  }
 }
