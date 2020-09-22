@@ -26,6 +26,10 @@ module WebhookConsumer
 
     config.autoload_paths += %W(#{config.root}/app/workers)
 
+    Raven.configure do |config|
+      config.dsn = 'https://dcf4930d26ab40b5bccfce3c8a0a6992@o451084.ingest.sentry.io/5436474'
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

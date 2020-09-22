@@ -46,3 +46,4 @@ gem 'sidekiq'
 gem 'whenever', require: false
 gem 'httparty'
 gem 'net-sftp', '~> 3.0'
+gem "sentry-raven"
