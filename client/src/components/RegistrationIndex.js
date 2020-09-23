@@ -21,7 +21,7 @@ class RegistrationIndex extends Component {
       });
   }
 
-  markAttended = (domain, session_id, registration_id) => {
+  markAttended = (id, domain, session_id, registration_id) => {
     const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`
     const proxyurl = "https://cors-anywhere.herokuapp.com/"
 
@@ -40,13 +40,18 @@ class RegistrationIndex extends Component {
     };
 
     axios.patch(
+      `/api/registrations/${id}`,
+      {is_attended: true}
+    )
+
+    axios.patch(
       proxyurl + url,
       body,
       config
     );
   };
 
-  markUnAttended = (domain, session_id, registration_id) => {
+  markUnAttended = (id, domain, session_id, registration_id) => {
     const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`
     const proxyurl = "https://cors-anywhere.herokuapp.com/"
 
@@ -69,7 +74,13 @@ class RegistrationIndex extends Component {
       body,
       config
     );
+
+    axios.patch(
+      `/api/registrations/${id}`,
+      {is_attended: false}
+    )
   };
+
 
   displayRegistrations = () => {
     const { registrations } = this.state;
@@ -98,12 +109,14 @@ class RegistrationIndex extends Component {
                       reg.is_attended
                         ? () =>
                             this.markUnAttended(
+                              reg.id,
                               domain,
                               reg.live_course_session_id,
                               reg.bridge_registration_id
                             )
                         : () =>
                             this.markAttended(
+                              reg.id,
                               domain,
                               reg.live_course_session_id,
                               reg.bridge_registration_id
