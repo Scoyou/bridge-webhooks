@@ -21,9 +21,9 @@ class RegistrationIndex extends Component {
       });
   }
 
-  markAttended = (id, domain, session_id, registration_id) => {
-    const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`
-    const proxyurl = "https://cors-anywhere.herokuapp.com/"
+  changeAttendance = (id, domain, session_id, registration_id, is_attended) => {
+    const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
     const token = process.env.REACT_APP_BRIDGE_API_KEY;
 
@@ -35,52 +35,22 @@ class RegistrationIndex extends Component {
 
     let body = {
       live_course_session_registration: {
-        marked_complete_at: moment().format(),
+        marked_complete_at: is_attended ? null : moment().format(),
       },
     };
 
-    axios.patch(
-      `/api/registrations/${id}`,
-      {is_attended: true}
-    )
-
-    axios.patch(
-      proxyurl + url,
-      body,
-      config
+    axios.patch(`/api/registrations/${id}`, { is_attended: !is_attended }).then(
+      axios
+        .get("/api/registrations")
+        .then((res) => {
+          this.setState({ registrations: res.data });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     );
+    // axios.patch(proxyurl + url, body, config);
   };
-
-  markUnAttended = (id, domain, session_id, registration_id) => {
-    const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`
-    const proxyurl = "https://cors-anywhere.herokuapp.com/"
-
-    const token = process.env.REACT_APP_BRIDGE_API_KEY;
-
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-
-    let body = {
-      live_course_session_registration: {
-        marked_complete_at: null,
-      },
-    };
-
-    axios.patch(
-      proxyurl + url,
-      body,
-      config
-    );
-
-    axios.patch(
-      `/api/registrations/${id}`,
-      {is_attended: false}
-    )
-  };
-
 
   displayRegistrations = () => {
     const { registrations } = this.state;
@@ -106,21 +76,15 @@ class RegistrationIndex extends Component {
                     slider
                     checked={reg.is_attended}
                     onClick={
-                      reg.is_attended
-                        ? () =>
-                            this.markUnAttended(
+                      () =>
+                            this.changeAttendance(
                               reg.id,
                               domain,
                               reg.live_course_session_id,
-                              reg.bridge_registration_id
+                              reg.bridge_registration_id,
+                              reg.is_attended
                             )
-                        : () =>
-                            this.markAttended(
-                              reg.id,
-                              domain,
-                              reg.live_course_session_id,
-                              reg.bridge_registration_id
-                            )
+
                     }
                   />
                 </Table.Cell>
