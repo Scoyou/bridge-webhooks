@@ -93,8 +93,9 @@ class RegistrationIndex extends Component {
                 <Table.Cell collapsing>
                   <Checkbox
                     slider
+                    checked={reg.is_attended}
                     onClick={
-                      reg.isAttended
+                      reg.is_attended
                         ? () =>
                             this.markUnAttended(
                               domain,
