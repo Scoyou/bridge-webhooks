@@ -49,7 +49,7 @@ class RegistrationIndex extends Component {
           console.log(err);
         })
     );
-    // axios.patch(proxyurl + url, body, config);
+    axios.patch(proxyurl + url, body, config);
   };
 
   displayRegistrations = () => {
