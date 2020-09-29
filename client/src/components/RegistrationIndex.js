@@ -22,11 +22,10 @@ class RegistrationIndex extends Component {
   }
 
   changeAttendance = (id, domain, session_id, registration_id, is_attended) => {
-    console.log(session_id, registration_id)
     const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    const token = process.env.REACT_APP_BRIDGE_API_KEY;
+    const token = 'Basic NmNlOWRmNWEtOGFlYS00OWIxLTg5ZDctMjE1M2M5YjU0YjA0OjFjY2IwNTMyLTQ2ZDItNDI2YS1iNmNhLTViNGM1YzhmNTc3MA=='
 
     let config = {
       headers: {
@@ -82,8 +81,8 @@ class RegistrationIndex extends Component {
                       this.changeAttendance(
                         reg.id,
                         domain,
-                        reg.session_id,
-                        reg.registration_id,
+                        reg.live_course_session_id,
+                        reg.bridge_registration_id,
                         reg.is_attended
                       )
                     }
