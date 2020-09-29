@@ -25,7 +25,7 @@ class RegistrationIndex extends Component {
     const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    const token = 'Basic NmNlOWRmNWEtOGFlYS00OWIxLTg5ZDctMjE1M2M5YjU0YjA0OjFjY2IwNTMyLTQ2ZDItNDI2YS1iNmNhLTViNGM1YzhmNTc3MA=='
+    const token = process.env.REACT_APP_BRIDGE_API_KEY
 
     let config = {
       headers: {
