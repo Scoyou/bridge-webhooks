@@ -40,7 +40,7 @@ class RegistrationIndex extends Component {
     };
 
     axios.patch(`/api/registrations/${id}`, { is_attended: !is_attended }).then(
-      axios
+      () => axios
         .get("/api/registrations")
         .then((res) => {
           this.setState({ registrations: res.data });
@@ -54,7 +54,7 @@ class RegistrationIndex extends Component {
 
   displayRegistrations = () => {
     const { registrations } = this.state;
-    const domain = "syautocsv2";
+    const domain = 'syautocsv2';
 
     return (
       <Container fluid>
@@ -70,21 +70,19 @@ class RegistrationIndex extends Component {
           </Table.Header>
           <Table.Body>
             {registrations.map((reg) => (
-              <Table.Row>
+              <Table.Row key={reg.id}>
                 <Table.Cell collapsing>
                   <Checkbox
                     slider
                     checked={reg.is_attended}
-                    onClick={
-                      () =>
-                            this.changeAttendance(
-                              reg.id,
-                              domain,
-                              reg.live_course_session_id,
-                              reg.bridge_registration_id,
-                              reg.is_attended
-                            )
-
+                    onClick={() =>
+                      this.changeAttendance(
+                        reg.id,
+                        domain,
+                        reg.session_id,
+                        reg.registration_id,
+                        reg.is_attended
+                      )
                     }
                   />
                 </Table.Cell>
