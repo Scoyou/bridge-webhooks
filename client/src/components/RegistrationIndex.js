@@ -22,6 +22,7 @@ class RegistrationIndex extends Component {
   }
 
   changeAttendance = (id, domain, session_id, registration_id, is_attended) => {
+    console.log(session_id, registration_id)
     const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -39,22 +40,24 @@ class RegistrationIndex extends Component {
       },
     };
 
-    axios.patch(`/api/registrations/${id}`, { is_attended: !is_attended }).then(
-      () => axios
-        .get("/api/registrations")
-        .then((res) => {
-          this.setState({ registrations: res.data });
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    );
+    axios
+      .patch(`/api/registrations/${id}`, { is_attended: !is_attended })
+      .then(() =>
+        axios
+          .get("/api/registrations")
+          .then((res) => {
+            this.setState({ registrations: res.data });
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      );
     axios.patch(proxyurl + url, body, config);
   };
 
   displayRegistrations = () => {
     const { registrations } = this.state;
-    const domain = 'syautocsv2';
+    const domain = "syautocsv2";
 
     return (
       <Container fluid>
