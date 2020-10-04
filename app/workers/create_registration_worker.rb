@@ -17,7 +17,7 @@ class CreateRegistrationWorker
             bridge_registration_id: registration_id,
             live_course_session_id: live_course_session_id,
             live_course_id: data['live_course']['id'],
-            uid: user.uid
+            uid: user.uid,
             is_attended: marked_attended
         )
 
