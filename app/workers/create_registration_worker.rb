@@ -7,8 +7,7 @@ class CreateRegistrationWorker
         registration_id = data['live_course_session_registration']['id']
         live_course_session_id = data['live_course_session']['id']
         live_course_id = data['live_course']['id']
-        marked_attended = data['live_course_session_registration']['marked_complete_at']
-        is_attended = marked_attended ? true : false
+        marked_attended = data['live_course_session_registration']['marked_complete_at'] ? true : false
 
         lc_title = data['live_course']['title']
         lc_date = Time.parse(data['live_course_session']['start_at'])
@@ -19,7 +18,7 @@ class CreateRegistrationWorker
             live_course_session_id: live_course_session_id,
             live_course_id: data['live_course']['id'],
             uid: user.uid
-            is_attended: is_attended
+            is_attended: marked_attended
         )
 
         user.number_of_registrations == nil ? user.update(number_of_registrations: 1) 
