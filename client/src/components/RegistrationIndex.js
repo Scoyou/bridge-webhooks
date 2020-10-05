@@ -84,7 +84,6 @@ class RegistrationIndex extends Component {
               <Table.Row key={reg.id}>
                 <Table.Cell collapsing>
                   <Checkbox
-                    slider
                     checked={reg.is_attended}
                     onClick={() =>
                       this.changeAttendance(
