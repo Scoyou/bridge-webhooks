@@ -12,6 +12,10 @@ class Api::RegistrationsController < ApplicationController
     end
   end
 
+  def sync_attendance
+    SyncAttendanceWorker.perform_async
+  end
+
   private
   def registration_params
     params.require(:registration).permit(:is_attended)

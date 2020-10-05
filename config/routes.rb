@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post '/hooks/bridge/update_registration' => 'webhooks#update'
 
   post '/api/users/user_sync' => 'api/users#add_to_db'
+  post '/api/users/sync_attendance' => 'api/registrations#sync_attendance'
 
   namespace :api do
     resources :registrations
