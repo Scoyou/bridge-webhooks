@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::RegistrationsController < ApplicationController
   def index
     render json: Registration.all
@@ -17,6 +19,7 @@ class Api::RegistrationsController < ApplicationController
   end
 
   private
+
   def registration_params
     params.require(:registration).permit(:is_attended)
   end
