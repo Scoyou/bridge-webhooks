@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import { Table, Container, Checkbox } from "semantic-ui-react";
 import { ExternalLink } from "react-external-link";
 import moment from "moment";
-
 import axios from "axios";
 
 class RegistrationIndex extends Component {
   state = {
     registrations: [],
+    search: ''
   };
 
   componentDidMount() {
+    let url = this.state.search === '' ? "/api/registrations" : `/api/registrations/uid=${this.state.search}`
     axios
-      .get("/api/registrations")
+      .get(url)
       .then((res) => {
         this.setState({ registrations: res.data });
       })
@@ -21,11 +22,16 @@ class RegistrationIndex extends Component {
       });
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ search: nextProps.filter });
+    console.log(this.state.search)
+  }
+
   changeAttendance = (id, domain, session_id, registration_id, is_attended) => {
     const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    const token = process.env.REACT_APP_BRIDGE_API_KEY
+    const token = process.env.REACT_APP_BRIDGE_API_KEY;
 
     let config = {
       headers: {
@@ -109,7 +115,11 @@ class RegistrationIndex extends Component {
   };
 
   render() {
-    return <div>{this.displayRegistrations()}</div>;
+    return (
+      <div>
+        {this.displayRegistrations()}
+      </div>
+    );
   }
 }
 
