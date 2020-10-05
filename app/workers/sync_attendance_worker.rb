@@ -2,8 +2,6 @@ class SyncAttendanceWorker
     include Sidekiq::Worker
     sidekiq_options retry: false
 
-    require 'pry'
-
     include HTTParty
 
     def fetch_live_courses
