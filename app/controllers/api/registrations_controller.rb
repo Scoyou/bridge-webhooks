@@ -11,8 +11,8 @@ class Api::RegistrationsController < ApplicationController
     else
       @registrations = Registration.all
     end
-
-    @registrations = Registration.where(uid: params['uid']) if params['uid']
+    
+    @registrations = Registration.where("uid ILIKE ?", "%#{params['uid']}%") if params['uid']
     @registrations = Registration.where(live_course_id: params['live_course_id']) if params['live_course_id']
     @registrations = Registration.where(live_course_session_id: params['live_course_session_id']) if params['live_course_session_id']
       

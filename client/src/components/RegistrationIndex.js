@@ -7,11 +7,11 @@ import axios from "axios";
 class RegistrationIndex extends Component {
   state = {
     registrations: [],
-    search: ''
+    filter: ''
   };
 
   componentDidMount() {
-    let url = this.state.search === '' ? "/api/registrations" : `/api/registrations/uid=${this.state.search}`
+    let url = this.state.filter === '' ? "/api/registrations" : `/api/registrations?uid=${this.state.filter}`
     axios
       .get(url)
       .then((res) => {
@@ -22,9 +22,12 @@ class RegistrationIndex extends Component {
       });
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ search: nextProps.filter });
-    console.log(this.state.search)
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.filter !== prevState.filter) {
+      return ({ filter: nextProps.filter }) 
+    }
+    return null
   }
 
   changeAttendance = (id, domain, session_id, registration_id, is_attended) => {
@@ -117,6 +120,7 @@ class RegistrationIndex extends Component {
   render() {
     return (
       <div>
+        {console.log(this.state.filter)}
         {this.displayRegistrations()}
       </div>
     );

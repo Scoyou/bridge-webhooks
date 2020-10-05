@@ -11,7 +11,6 @@ class Filter extends Component {
 
       myChangeHandler = (event) => {
         this.setState({uid: event.target.value});
-        console.log(this.state.uid)
       }
 
 	render() {
@@ -19,8 +18,8 @@ class Filter extends Component {
 
 		return(
             <div>
-                <Input placeholder='Search...' onChange={this.myChangeHandler}/>
-                <RegistrationIndex filter={this.state.uid}/>
+                <Input placeholder='Enter UID' onChange={this.myChangeHandler}/>
+                <RegistrationIndex key={this.state.uid} filter={this.state.uid}/>
             </div>
         )
 	}
