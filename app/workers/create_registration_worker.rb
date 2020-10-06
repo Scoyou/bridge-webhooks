@@ -15,7 +15,7 @@ class CreateRegistrationWorker
     lc_date = Time.parse(data['live_course_session']['start_at'])
 
     registration = Registration.create!(
-      user_id: User.find_by(uid: user.uid).id,
+      user_id: user.id,
       bridge_registration_id: registration_id,
       live_course_session_id: live_course_session_id,
       live_course_id: data['live_course']['id'],

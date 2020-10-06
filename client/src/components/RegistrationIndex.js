@@ -103,13 +103,20 @@ class RegistrationIndex extends Component {
                   <Table.Cell>
                     <ExternalLink
                       key={reg.id}
-                      href={`https://${domain}.bridgeapp.com/author/training/${reg.live_course_id}/sessions/${reg.live_course_session_id}?search=${reg.uid}`}
+                      href={`https://syautocsv2.bridgeapp.com/admin/users?search=${reg.uid}`}
                     >
                       {reg.uid}
                     </ExternalLink>
                   </Table.Cell>
                   <Table.Cell>{reg.live_course_id}</Table.Cell>
-                  <Table.Cell>{reg.live_course_title}</Table.Cell>
+                  <Table.Cell>
+                    <ExternalLink
+                      key={reg.id}
+                      href={`https://${domain}.bridgeapp.com/author/training/${reg.live_course_id}`}
+                    >
+                      {reg.live_course_title}
+                    </ExternalLink>
+                  </Table.Cell>
                   <Table.Cell>{reg.session_start_time}</Table.Cell>
                 </Table.Row>
               ))}
@@ -123,11 +130,7 @@ class RegistrationIndex extends Component {
   };
 
   render() {
-    return (
-      <div>
-        {this.displayRegistrations()}
-      </div>
-    );
+    return <div>{this.displayRegistrations()}</div>;
   }
 }
 
