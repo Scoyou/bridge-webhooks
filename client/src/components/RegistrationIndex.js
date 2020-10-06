@@ -103,7 +103,7 @@ class RegistrationIndex extends Component {
                   <Table.Cell>
                     <ExternalLink
                       key={reg.id}
-                      href={`https://syautocsv2.bridgeapp.com/admin/users?search=${reg.uid}`}
+                      href={`https://${domain}.bridgeapp.com/admin/users?search=${reg.uid}`}
                     >
                       {reg.uid}
                     </ExternalLink>
