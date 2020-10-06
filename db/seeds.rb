@@ -8,12 +8,3 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-20.times do |_reg|
-  Registration.create(
-    user_id: User.last.id,
-    uid: User.last.uid,
-    live_course_id: rand(20),
-    live_course_session_id: rand(30),
-    bridge_registration_id: rand(500)
-  )
-end
