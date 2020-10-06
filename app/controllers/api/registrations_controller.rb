@@ -14,8 +14,8 @@ class Api::RegistrationsController < ApplicationController
     
     @registrations = Registration.where("uid ILIKE ?", "%#{params['uid']}%") if params['uid']
     @registrations = Registration.where(live_course_id: params['live_course_id']) if params['live_course_id']
-    @registrations = Registration.where(live_course_session_id: params['live_course_session_id']) if params['live_course_session_id']
-      
+    @registrations = Registration.where(live_course_session_id: params['live_course_session_id']) if params['session_id']
+
     render json: @registrations
   end
 
@@ -36,10 +36,10 @@ class Api::RegistrationsController < ApplicationController
 
   def registration_params
     params.require(:registration).permit(
-                                        :is_attended, 
-                                        :uid,
-                                        :live_course_id,
-                                        :live_course_session_id
-                                      )
+      :is_attended, 
+      :uid,
+      :live_course_id,
+      :live_course_session_id
+    )
   end
 end

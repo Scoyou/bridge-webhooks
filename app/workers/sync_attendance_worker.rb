@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SyncAttendanceWorker
+  require 'pry'
   include Sidekiq::Worker
   sidekiq_options retry: false
 
@@ -19,13 +20,13 @@ class SyncAttendanceWorker
     if data['meta']['next']
       while data['meta']['next']
         lt = data['live_courses']
-        lt.each { |lt| trainings << lt['id'] }
+        lt.each { |lt| trainings << { :id => lt['id'], :title => lt['title']} }
         response = HTTParty.get(data['meta']['next'], headers: headers)
         data = JSON.parse(response.body)
       end
     else
       lt = data['live_courses']
-      lt.each { |lt| trainings << lt['id'] }
+      lt.each { |lt| trainings << { :id => lt['id'], :title => lt['title']} }
     end
 
     trainings
@@ -44,13 +45,13 @@ class SyncAttendanceWorker
     if data['meta']['next']
       while data['meta']['next']
         session = data['sessions']
-        session.each { |s| sessions << s['id'] }
+        session.each { |s| sessions << { :id => s['id'], :start_at => s['start_at'] } }
         response = HTTParty.get(data['meta']['next'], headers: headers)
         data = JSON.parse(response.body)
       end
     else
       session = data['sessions']
-      session.each { |s| sessions << s['id'] }
+      session.each { |s| sessions << { :id => s['id'], :start_at => s['start_at'] } }
     end
 
     sessions
@@ -88,13 +89,16 @@ class SyncAttendanceWorker
     registrations = []
 
     live_courses.each do |lc|
-      sessions << { lc => fetch_sessions(lc) }
+      sessions << { lc => fetch_sessions(lc[:id]) }
     end
 
     sessions = sessions.reduce({}, :merge)
 
+    
+    
+
     sessions.values.flatten.each do |session|
-      registrations << fetch_session_registrations(session)
+      registrations << fetch_session_registrations(session[:id])
     end
 
     registrations = registrations.flatten
@@ -105,12 +109,19 @@ class SyncAttendanceWorker
       is_attended = r['marked_complete_at'] ? true : false
 
       live_course_session_id = r['live_course_session_id']
-      live_course = sessions.select { |_k, v| v.include?(r['live_course_session_id']) }.keys.first
+      session = sessions.values.flatten.find {|x| x[:id] == live_course_session_id}
+      live_course = sessions.select {|_k, v| v.include?(session)}.keys
+      live_course = live_course.reduce({}, :merge)
+      
+
+      lc_title = live_course[:title]
 
       reg.update(
         is_attended: is_attended,
-        live_course_id: live_course,
+        live_course_id: live_course[:id],
         live_course_session_id: live_course_session_id,
+        session_start_time: session[:start_at],
+        live_course_title: lc_title,
         uid: r['uid']
       )
 
