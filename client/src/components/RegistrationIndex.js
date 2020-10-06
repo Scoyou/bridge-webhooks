@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table, Container, Checkbox } from "semantic-ui-react";
 import { ExternalLink } from "react-external-link";
-import moment from "moment";
+import Moment from "moment";
 import axios from "axios";
 
 class RegistrationIndex extends Component {
@@ -46,7 +46,7 @@ class RegistrationIndex extends Component {
 
     let body = {
       live_course_session_registration: {
-        marked_complete_at: is_attended ? null : moment().format(),
+        marked_complete_at: is_attended ? null : Moment().format(),
       },
     };
 
@@ -117,7 +117,7 @@ class RegistrationIndex extends Component {
                       {reg.live_course_title}
                     </ExternalLink>
                   </Table.Cell>
-                  <Table.Cell>{reg.session_start_time}</Table.Cell>
+                  <Table.Cell>{Moment(reg.session_start_time).format('LLLL')}</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
