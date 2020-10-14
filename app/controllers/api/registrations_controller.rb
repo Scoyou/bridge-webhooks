@@ -8,7 +8,7 @@ class Api::RegistrationsController < ApplicationController
     when "false"
       @registrations = Registration.where(is_attended: false).page(params[:page]).per(15)
     else
-      @registrations = Registration.order("created_at ASC").page(params[:page]).per(30)
+      @registrations = Registration.order("created_at ASC").page(params[:page]).per(15)
     end
 
     @registrations = Registration.where("uid ILIKE ?", "%#{params["uid"]}%").page(params[:page]).per(15) if params["uid"]

@@ -132,8 +132,6 @@ const RegistrationIndex = () => {
 
   useEffect(() => {
     let re = new RegExp(`${uid}.*`, 'g')
-    console.log(re)
-    console.log(uid)
     const results =
       resolvedData && resolvedData.filter((data) => data.uid.match(re));
     setSearchResults(results);
