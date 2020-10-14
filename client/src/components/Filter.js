@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Input } from "semantic-ui-react";
 import RegistrationIndex from "./RegistrationIndex";
 import styled from "styled-components";
@@ -9,26 +9,18 @@ const Header = styled.div`
   padding: 30px;
 `;
 
-class Filter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { uid: "" };
-  }
 
-  myChangeHandler = (event) => {
-    this.setState({ uid: event.target.value });
-  };
-
-  render() {
+const Filter = () => {
+  const [uid, setUid] = useState('')
     return (
       <div>
         <Header>
-          <Input placeholder="Enter UID" onChange={this.myChangeHandler} />
+          <Input placeholder="Enter UID" onChange={e => setUid(e.target.value)} />
+          {console.log(uid)}
         </Header>
-        <RegistrationIndex key={this.state.uid} filter={this.state.uid} />
+        <RegistrationIndex key={uid} filter={uid} />
       </div>
     );
-  }
 }
 
 export default Filter;

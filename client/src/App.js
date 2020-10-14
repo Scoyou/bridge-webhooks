@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Filter from './components/Filter';
+import RegistrationIndex from './components/RegistrationIndex';
 
 function App() {
   return (
     <div>
-      <Filter />
+      <RegistrationIndex />
     </div>
   );
 }

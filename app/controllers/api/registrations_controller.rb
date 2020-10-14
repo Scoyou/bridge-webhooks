@@ -2,19 +2,18 @@
 
 class Api::RegistrationsController < ApplicationController
   def index
-
-    case params['is_attended']
+    case params["is_attended"]
     when "true"
-      @registrations = Registration.where(is_attended: true)
+      @registrations = Registration.where(is_attended: true).page(params[:page]).per(15)
     when "false"
-      @registrations = Registration.where(is_attended: false)
+      @registrations = Registration.where(is_attended: false).page(params[:page]).per(15)
     else
-      @registrations = Registration.all
+      @registrations = Registration.order("created_at ASC").page(params[:page]).per(30)
     end
-    
-    @registrations = Registration.where("uid ILIKE ?", "%#{params['uid']}%") if params['uid']
-    @registrations = Registration.where(live_course_id: params['live_course_id']) if params['live_course_id']
-    @registrations = Registration.where(live_course_session_id: params['live_course_session_id']) if params['session_id']
+
+    @registrations = Registration.where("uid ILIKE ?", "%#{params["uid"]}%").page(params[:page]).per(15) if params["uid"]
+    @registrations = Registration.where(live_course_id: params["live_course_id"]).page(params[:page]).per(15) if params["live_course_id"]
+    @registrations = Registration.where(live_course_session_id: params["live_course_session_id"]).page(params[:page]).per(15) if params["session_id"]
 
     render json: @registrations
   end
@@ -36,7 +35,7 @@ class Api::RegistrationsController < ApplicationController
 
   def registration_params
     params.require(:registration).permit(
-      :is_attended, 
+      :is_attended,
       :uid,
       :live_course_id,
       :live_course_session_id

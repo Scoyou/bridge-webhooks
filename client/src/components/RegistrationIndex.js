@@ -1,137 +1,188 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Container, Checkbox } from "semantic-ui-react";
 import { ExternalLink } from "react-external-link";
 import Moment from "moment";
 import axios from "axios";
+import { usePaginatedQuery } from "react-query";
+import { Input } from "semantic-ui-react";
+import styled from "styled-components";
+import { ReactQueryDevtools } from "react-query-devtools";
 
-class RegistrationIndex extends Component {
-  state = {
-    registrations: [],
-    filter: "",
+const fetchRegistrations = async (key, page) => {
+  const res = await fetch(`/api/registrations?page=${page}`);
+  return res.json();
+};
+
+const changeAttendance = (
+  id,
+  domain,
+  session_id,
+  registration_id,
+  is_attended,
+  refetch
+) => {
+  const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
+  const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+  const token = process.env.REACT_APP_BRIDGE_API_KEY;
+
+  let config = {
+    headers: {
+      Authorization: token,
+    },
   };
 
-  componentDidMount() {
-    let url =
-      this.state.filter === ""
-        ? "/api/registrations"
-        : `/api/registrations?uid=${this.state.filter}`;
-    axios
-      .get(url)
-      .then((res) => {
-        this.setState({ registrations: res.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.filter !== prevState.filter) {
-      return { filter: nextProps.filter };
-    }
-    return null;
-  }
-
-  changeAttendance = (id, domain, session_id, registration_id, is_attended) => {
-    const url = `https://${domain}.bridgeapp.com/api/author/live_course_sessions/${session_id}/registrations/${registration_id}`;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-    const token = process.env.REACT_APP_BRIDGE_API_KEY;
-
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-
-    let body = {
-      live_course_session_registration: {
-        marked_complete_at: is_attended ? null : Moment().format(),
-      },
-    };
-
-    axios
-      .patch(`/api/registrations/${id}`, { is_attended: !is_attended })
-      .then(() =>
-        axios
-          .get("/api/registrations")
-          .then((res) => {
-            this.setState({ registrations: res.data });
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      );
-    axios.patch(proxyurl + url, body, config);
+  let body = {
+    live_course_session_registration: {
+      marked_complete_at: is_attended ? null : Moment().format(),
+    },
   };
 
-  displayRegistrations = () => {
-    const { registrations } = this.state;
-    const domain = "syautocsv2";
+  axios
+    .patch(`/api/registrations/${id}`, { is_attended: !is_attended })
+    .then(() => {
+      refetch();
+    });
+  // axios.patch(proxyurl + url, body, config);
+};
 
-    return (
-      <Container fluid>
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Attended</Table.HeaderCell>
-              <Table.HeaderCell>Unique ID</Table.HeaderCell>
-              <Table.HeaderCell>Live Course ID</Table.HeaderCell>
-              <Table.HeaderCell>Title</Table.HeaderCell>
-              <Table.HeaderCell>Start Time</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          {this.state.registrations ? (
-            <Table.Body>
-              {registrations.map((reg) => (
-                <Table.Row key={reg.id}>
-                  <Table.Cell collapsing>
-                    <Checkbox
-                      checked={reg.is_attended}
-                      onClick={() =>
-                        this.changeAttendance(
-                          reg.id,
-                          domain,
-                          reg.live_course_session_id,
-                          reg.bridge_registration_id,
-                          reg.is_attended
-                        )
-                      }
-                    />
-                  </Table.Cell>
+const displayRegistrations = (registrations, refetch) => {
+  const domain = "syautocsv2";
 
-                  <Table.Cell>
-                    <ExternalLink
-                      key={reg.id}
-                      href={`https://${domain}.bridgeapp.com/admin/users?search=${reg.uid}`}
-                    >
-                      {reg.uid}
-                    </ExternalLink>
-                  </Table.Cell>
-                  <Table.Cell>{reg.live_course_id}</Table.Cell>
-                  <Table.Cell>
-                    <ExternalLink
-                      key={reg.id}
-                      href={`https://${domain}.bridgeapp.com/author/training/${reg.live_course_id}`}
-                    >
-                      {reg.live_course_title}
-                    </ExternalLink>
-                  </Table.Cell>
-                  <Table.Cell>{Moment(reg.session_start_time).format('LLLL')}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          ) : (
-            <p>No users found</p>
-          )}
-        </Table>
-      </Container>
-    );
+  return (
+    <Container fluid>
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Attended</Table.HeaderCell>
+            <Table.HeaderCell>Unique ID</Table.HeaderCell>
+            <Table.HeaderCell>Live Course ID</Table.HeaderCell>
+            <Table.HeaderCell>Title</Table.HeaderCell>
+            <Table.HeaderCell>Start Time</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        {registrations ? (
+          <Table.Body>
+            {registrations.map((reg) => (
+              <Table.Row key={reg.id}>
+                <Table.Cell collapsing>
+                  <Checkbox
+                    checked={reg.is_attended}
+                    onClick={() =>
+                      changeAttendance(
+                        reg.id,
+                        domain,
+                        reg.live_course_session_id,
+                        reg.bridge_registration_id,
+                        reg.is_attended,
+                        refetch
+                      )
+                    }
+                  />
+                </Table.Cell>
+
+                <Table.Cell>
+                  <ExternalLink
+                    key={reg.id}
+                    href={`https://${domain}.bridgeapp.com/admin/users?search=${reg.uid}`}
+                  >
+                    {reg.uid}
+                  </ExternalLink>
+                </Table.Cell>
+                <Table.Cell>{reg.live_course_id}</Table.Cell>
+                <Table.Cell>
+                  <ExternalLink
+                    key={reg.id}
+                    href={`https://${domain}.bridgeapp.com/author/training/${reg.live_course_id}`}
+                  >
+                    {reg.live_course_title}
+                  </ExternalLink>
+                </Table.Cell>
+                <Table.Cell>
+                  {Moment(reg.session_start_time).format("LLLL")}
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        ) : (
+          <p>No users found</p>
+        )}
+      </Table>
+    </Container>
+  );
+};
+
+const Header = styled.div`
+  background-color: #f6f7f9;
+  height: 100px;
+  padding: 30px;
+`;
+
+const RegistrationIndex = () => {
+  const [page, setPage] = useState(1);
+  const [searchResults, setSearchResults] = useState([]);
+  const [uid, setUid] = useState("");
+  const handleChange = (event) => {
+    setUid(event.target.value);
   };
 
-  render() {
-    return <div>{this.displayRegistrations()}</div>;
-  }
-}
+  const { resolvedData, latestData, status, refetch } = usePaginatedQuery(
+    ["registrations", page],
+    fetchRegistrations
+  );
+
+  useEffect(() => {
+    let re = new RegExp(`${uid}.*`, 'g')
+    console.log(re)
+    console.log(uid)
+    const results =
+      resolvedData && resolvedData.filter((data) => data.uid.match(re));
+    setSearchResults(results);
+  }, [uid]);
+
+  return (
+    <div>
+      {status === "loading" && <div>Loading data...</div>}
+      {status === "error" && <div>Error fetching data</div>}
+      {status === "success" && (
+        <>
+          <Header>
+            <Input
+              placeholder="Enter UID"
+              value={uid}
+              onChange={handleChange}
+            />
+          </Header>
+          <div>
+            {displayRegistrations(
+              (searchResults && searchResults.length === 0) || !searchResults
+                ? resolvedData
+                : searchResults,
+              refetch
+            )}
+          </div>
+          <button
+            onClick={() => setPage((old) => Math.max(old - 1, 1))}
+            disabled={page === 1}
+          >
+            Previous Page
+          </button>
+          <span>{page}</span>
+          <button
+            onClick={() =>
+              setPage((old) =>
+                !latestData || !latestData.next ? old : old + 1
+              )
+            }
+            disabled={!latestData || !latestData.next}
+          >
+            Next Page
+          </button>
+        </>
+      )}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </div>
+  );
+};
 
 export default RegistrationIndex;
