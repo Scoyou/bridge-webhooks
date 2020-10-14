@@ -131,12 +131,11 @@ const RegistrationIndex = () => {
   );
 
   useEffect(() => {
-    let re = new RegExp(`${uid}.*`, 'g')
+    let re = new RegExp(`${uid}.*`, "g");
     const results =
-      resolvedData && resolvedData.filter((data) => data.uid.match(re));
+      resolvedData && resolvedData.results.filter((data) => data.uid.match(re));
     setSearchResults(results);
-  }, [uid]);
-
+  }, [uid, resolvedData, refetch]);
   return (
     <div>
       {status === "loading" && <div>Loading data...</div>}
@@ -153,7 +152,7 @@ const RegistrationIndex = () => {
           <div>
             {displayRegistrations(
               (searchResults && searchResults.length === 0) || !searchResults
-                ? resolvedData
+                ? resolvedData.results
                 : searchResults,
               refetch
             )}
@@ -164,14 +163,12 @@ const RegistrationIndex = () => {
           >
             Previous Page
           </button>
-          <span>{page}</span>
+          <span>
+            {page} of {resolvedData.total_pages}
+          </span>
           <button
-            onClick={() =>
-              setPage((old) =>
-                !latestData || !latestData.next ? old : old + 1
-              )
-            }
-            disabled={!latestData || !latestData.next}
+            onClick={() => setPage(page + 1)}
+            disabled={page === resolvedData.total_pages}
           >
             Next Page
           </button>
