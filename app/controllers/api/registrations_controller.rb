@@ -15,7 +15,7 @@ class Api::RegistrationsController < ApplicationController
     @registrations = Registration.where(live_course_id: params["live_course_id"]).page(params[:page]).per(15) if params["live_course_id"]
     @registrations = Registration.where(live_course_session_id: params["live_course_session_id"]).page(params[:page]).per(15) if params["session_id"]
 
-    render json: @registrations
+    render json: { total_pages: @registrations.total_pages, results: @registrations }
   end
 
   def update
