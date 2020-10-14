@@ -6,7 +6,6 @@ import axios from "axios";
 import { usePaginatedQuery } from "react-query";
 import { Input } from "semantic-ui-react";
 import styled from "styled-components";
-import { ReactQueryDevtools } from "react-query-devtools";
 
 const fetchRegistrations = async (key, page) => {
   const res = await fetch(`/api/registrations?page=${page}`);
@@ -180,7 +179,6 @@ const RegistrationIndex = () => {
           </button>
         </>
       )}
-      <ReactQueryDevtools initialIsOpen={false} />
     </div>
   );
 };
