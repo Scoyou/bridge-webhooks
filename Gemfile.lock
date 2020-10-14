@@ -66,6 +66,8 @@ GEM
     connection_pool (2.2.3)
     crass (1.0.6)
     erubi (1.9.0)
+    faker (2.14.0)
+      i18n (>= 1.6, < 2)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.13.1)
@@ -198,6 +200,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
+  faker
   httparty
   kaminari
   listen (>= 3.0.5, < 3.2)
