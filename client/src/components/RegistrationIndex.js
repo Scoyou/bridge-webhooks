@@ -42,7 +42,7 @@ const changeAttendance = (
     .then(() => {
       refetch();
     });
-  // axios.patch(proxyurl + url, body, config);
+  axios.patch(proxyurl + url, body, config);
 };
 
 const displayRegistrations = (registrations, refetch) => {
