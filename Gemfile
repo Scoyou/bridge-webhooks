@@ -52,3 +52,4 @@ gem "twilio-ruby"
 gem "whenever", require: false
 gem "kaminari"
 gem "scout_apm"
+gem "paper_trail"

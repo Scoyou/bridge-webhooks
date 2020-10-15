@@ -120,6 +120,9 @@ GEM
     nio4r (2.5.4)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
+    paper_trail (11.0.0)
+      activerecord (>= 5.2)
+      request_store (~> 1.1)
     parser (2.7.2.0)
       ast (~> 2.4.1)
     pg (1.2.3)
@@ -164,6 +167,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redis (4.2.2)
+    request_store (1.5.0)
+      rack (>= 1.4)
     ruby_dep (1.5.0)
     scout_apm (2.6.9)
       parser
@@ -210,6 +215,7 @@ DEPENDENCIES
   kaminari
   listen (>= 3.0.5, < 3.2)
   net-sftp (~> 3.0)
+  paper_trail
   pg (>= 0.18, < 2.0)
   pry-rails (~> 0.3.9)
   puma (~> 4.1)
