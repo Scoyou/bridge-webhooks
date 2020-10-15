@@ -149,6 +149,7 @@ const RegistrationIndex = () => {
       ? () => fetchLearnerRegistrations(setSearchResults, uid, refetch)
       : setSearchResults(results);
   }, [uid, resolvedData, refetch]);
+
   return (
     <div>
       {status === "loading" && <div>Loading data...</div>}
