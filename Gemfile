@@ -51,3 +51,4 @@ gem "sidekiq"
 gem "twilio-ruby"
 gem "whenever", require: false
 gem "kaminari"
+gem "scout_apm"
