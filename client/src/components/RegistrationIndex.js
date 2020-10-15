@@ -117,6 +117,16 @@ const Header = styled.div`
   padding: 30px;
 `;
 
+const fetchLearnerRegistrations = (setSearchResults, uid, refetch) => {
+  axios
+    .get(`/api/registrations?uid=${uid}`)
+    .then((res) => {
+      setSearchResults(res.data.results);
+      refetch();
+    })
+    .catch((e) => console.log(e));
+};
+
 const RegistrationIndex = () => {
   const [page, setPage] = useState(1);
   const [searchResults, setSearchResults] = useState([]);
@@ -125,7 +135,7 @@ const RegistrationIndex = () => {
     setUid(event.target.value);
   };
 
-  const { resolvedData, latestData, status, refetch } = usePaginatedQuery(
+  const { resolvedData, status, refetch } = usePaginatedQuery(
     ["registrations", page],
     fetchRegistrations
   );
@@ -134,7 +144,10 @@ const RegistrationIndex = () => {
     let re = new RegExp(`${uid}.*`, "g");
     const results =
       resolvedData && resolvedData.results.filter((data) => data.uid.match(re));
-    setSearchResults(results);
+    // setSearchResults(results);
+    return results && results.length === 0
+      ? () => fetchLearnerRegistrations(setSearchResults, uid, refetch)
+      : setSearchResults(results);
   }, [uid, resolvedData, refetch]);
   return (
     <div>
